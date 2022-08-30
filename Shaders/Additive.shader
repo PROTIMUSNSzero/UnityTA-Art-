@@ -1,4 +1,4 @@
-Shader "Unlit/AlphaBlend"
+Shader "Unlit/Additive"
 {
     Properties
     {
@@ -17,8 +17,7 @@ Shader "Unlit/AlphaBlend"
 
         Pass
         {
-                  //源因子 目标因子
-            Blend One OneMinusSrcAlpha
+            Blend One One // 颜色叠加，提亮
 
             CGPROGRAM
             #pragma vertex vert
@@ -51,8 +50,8 @@ Shader "Unlit/AlphaBlend"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed4 col = tex2D(_MainTex, i.uv);
-                return col;
+                fixed3 col = tex2D(_MainTex, i.uv).rgb;
+                return float4(col, 1);
             }
             ENDCG
         }
