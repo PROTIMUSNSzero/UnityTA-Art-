@@ -51,6 +51,7 @@ Shader "Unlit/Additive"
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed3 col = tex2D(_MainTex, i.uv).rgb;
+                // 若贴图未预乘，颜色值需乘alpha值，已预乘则贴图无需a通道
                 return float4(col, 1);
             }
             ENDCG
