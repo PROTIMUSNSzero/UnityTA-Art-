@@ -4,7 +4,7 @@ Shader "Unlit/L10"
     {
         [Header(Textures)]
         _MainTex ("MainTex", 2D) = "white" {}
-        _NormalTex ("Normal", 2D) = "bump" {}
+        [Normal] _NormalTex ("Normal", 2D) = "bump" {}
         _SpecTex ("SpecTex", 2D) = "gray" {}
         // 自发光
         _EmitTex ("EmitTex", 2D) = "black" {}
@@ -12,11 +12,11 @@ Shader "Unlit/L10"
         [Header(Diffuse)]
         _MainColor ("MainColor", Color) = (1, 1, 1, 1)
         _EnvDiffuse ("EnvDiffuse", Range(0, 1)) = 0.2
-        _EnvUpCol ("EnvUpCol", Color) = (1, 1, 1, 1)
+        [HDR] _EnvUpCol ("EnvUpCol", Color) = (1, 1, 1, 1)
         _EnvSideCol ("EnvSideCol", Color) = (1, 1, 1, 1)
         _EnvDownCol ("EnvDownCol", Color) = (1, 1, 1, 1)
         [Header(Specular)]
-        _SpecPow ("SpecPow", Range(0, 90)) = 1
+        [PowerSlider(2)] _SpecPow ("SpecPow", Range(0, 90)) = 1
         _EnvSpec ("EnvSpec", Range(0, 10)) = 1
         _FresnelPow ("FresnelPow", Range(0, 10)) = 1
         _CubemapMip ("CubemapMip", Range(0, 7)) = 0
