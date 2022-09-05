@@ -1,4 +1,4 @@
-Shader "Unlit/OgreBase"
+Shader "Unlit/OgreArms"
 {
     Properties
     {
@@ -8,7 +8,9 @@ Shader "Unlit/OgreBase"
         _SpecularTex ("SpecularTex", 2D) = "gray" {}
         _SpecularMask ("SpecularMask", 2D) = "gray" {}
         _OcculusionMask ("OcculusionMask", 2D) = "gray" {}
+        _BaseMask ("BaseMask", 2D) = "black" {}
         _EmitTex ("EmitTex", 2D) = "balck" {}
+        _MetalTex ("MetalTex", 2D) = "gray" {}
         [PowerSlider(2)] _SpecularPow ("SpecularPow", Range(0, 90)) = 10
         [PowerSlider(2)] _FresnelPow ("FresnelPow", Range(0, 10)) = 10
         _CubemapMip ("CubemapMip", Range(0, 7)) = 0
@@ -28,6 +30,8 @@ Shader "Unlit/OgreBase"
             #pragma fragment frag
 
             #include "UnityCG.cginc"
+            #include "Lighting.cginc"
+            #include "AutoLight.cginc"
 
             struct appdata
             {
@@ -55,6 +59,8 @@ Shader "Unlit/OgreBase"
             sampler2D _SpecularMask;
             sampler2D _OcculusionMask;
             sampler2D _EmitTex;
+            sampler2D _BaseMask;
+            sampler2D _MetalTex;
 
             float _SpecularPow;
             float _FresnelPow;
@@ -77,21 +83,26 @@ Shader "Unlit/OgreBase"
             fixed4 frag (v2f i) : SV_Target
             {
                 float2 rUV = float2(i.uv.x, 1 - i.uv.y);
-                float3 n = UnpackNormal(tex2D(_NormalTex, i.uv));
+                float3 n = UnpackNormal(tex2D(_NormalTex, i.uv)) * float3(1, -1, 1);
                 float3x3 TBN = float3x3(i.tDirWS, i.bDirWS, i.nDirWS);
                 float3 nDirWS = normalize(mul(n, TBN));
                 fixed4 baseCol = tex2D(_BaseColorTex, i.uv);
                 float3 lDirWS = normalize(UnityWorldSpaceLightDir(i.posWS));
                 float3 lambert = dot(nDirWS, lDirWS) * 0.5 + 0.5;
-                float3 diffuse = baseCol * lambert;
+                float3 diffuse = baseCol * lambert * _LightColor0;
 
+                float3 baseMaskCol = tex2D(_BaseMask, rUV);
                 float3 rlDirWS = normalize(reflect(-lDirWS, nDirWS));
                 float3 vDirWS = normalize(UnityWorldSpaceViewDir(i.posWS));
                 float3 phong = dot(rlDirWS, vDirWS) * 0.5 + 0.5;
-                float3 specCol = tex2D(_SpecularTex, float2(i.uv.x, i.uv.y));
+                float3 specCol = tex2D(_SpecularTex, rUV);
                 float specMask = tex2D(_SpecularMask, rUV).r;
                 float specularPow = lerp(1, _SpecularPow, specMask);
-                float3 specular = pow(phong, specularPow) * specCol;
+                float3 spec = pow(phong, specularPow);
+                float baseMask = tex2D(_BaseMask, rUV).a;
+                float3 maskCol = lerp(_LightColor0, baseCol, baseMask);
+                float metalCol = tex2D(_MetalTex, rUV).r;
+                float3 specular = spec * maskCol * metalCol;
 
                 float occulusion = tex2D(_OcculusionMask, rUV).r;
                 float fresnel = pow(1 - (dot(vDirWS, nDirWS) * 0.5 + 0.5), _FresnelPow);
