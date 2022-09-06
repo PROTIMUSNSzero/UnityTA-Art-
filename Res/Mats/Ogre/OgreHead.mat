@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: OgreArms
+  m_Name: OgreHead
   m_Shader: {fileID: 4800000, guid: e347975a8710eb641af7c3f3b8cf2ad2, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
@@ -20,11 +20,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BaseColorTex:
-        m_Texture: {fileID: 2800000, guid: 68f8182114aae23429b8a35d0c0160ec, type: 3}
+        m_Texture: {fileID: 2800000, guid: 5bb677d9c86668e45a558e60f0fadddc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMask:
-        m_Texture: {fileID: 2800000, guid: e0a3ba30da8795e4390ffe3c2fa0dad3, type: 3}
+        m_Texture: {fileID: 2800000, guid: 19c270b9e9c591a4f93c77107078d50f, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -32,7 +32,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Cubemap:
-        m_Texture: {fileID: 8900000, guid: 261914c8886e7ac48bcccba8d5600011, type: 3}
+        m_Texture: {fileID: 8900000, guid: 6d60960cbd21b8e458eddf411396e336, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -52,7 +52,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmitTex:
-        m_Texture: {fileID: 2800000, guid: 0edb1ddfb3547574ba6010b1f0ed091d, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4e9ffb4373f16574eaf1553d2acf420b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -60,7 +60,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
-        m_Texture: {fileID: 2800000, guid: 24d65db273c5e874f9572ffe8c0eb4cd, type: 3}
+        m_Texture: {fileID: 2800000, guid: 1a6023e2fb381fc4b8d84d7989e17361, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -68,7 +68,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalTex:
-        m_Texture: {fileID: 2800000, guid: ae3bebabf178c9747b8f46bb89e34a2e, type: 3}
+        m_Texture: {fileID: 2800000, guid: d0344c2ef90053a46aae27e3225972bc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -76,7 +76,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcculusionMask:
-        m_Texture: {fileID: 2800000, guid: a698a9dca9152e842928ef40249babfc, type: 3}
+        m_Texture: {fileID: 2800000, guid: 3bc35770c201d6e408956b94d90411b1, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
@@ -84,23 +84,23 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularMask:
-        m_Texture: {fileID: 2800000, guid: a2fc2148385e3534aa75c6b94ed4d108, type: 3}
+        m_Texture: {fileID: 2800000, guid: 84261cf7a5723914493a214cdb4bfb0c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularTex:
-        m_Texture: {fileID: 2800000, guid: 1c32dee729f3f56478d628f2199f6aa8, type: 3}
+        m_Texture: {fileID: 2800000, guid: baa83e61aaab89547a8a2a529c67595b, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _BumpScale: 1
-    - _CubemapMip: 6.83
+    - _CubemapMip: 6.69
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _EmitStrength: 1.52
-    - _EnvSpec: 2.73
-    - _FresnelPow: 0.4
+    - _EmitStrength: 1.33
+    - _EnvSpec: 1.44
+    - _FresnelPow: 0.3
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -109,9 +109,9 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
-    - _SpecInt: 1.83
+    - _SpecInt: 2.8
     - _SpecularHighlights: 1
-    - _SpecularPow: 1.3
+    - _SpecularPow: 7.1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1

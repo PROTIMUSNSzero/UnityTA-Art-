@@ -1,4 +1,4 @@
-Shader "Unlit/OgreArms"
+Shader "Unlit/OgreOpaque"
 {
     Properties
     {
@@ -11,16 +11,23 @@ Shader "Unlit/OgreArms"
         _BaseMask ("BaseMask", 2D) = "black" {}
         _EmitTex ("EmitTex", 2D) = "balck" {}
         _MetalTex ("MetalTex", 2D) = "gray" {}
+        _OpaqueTex ("OpaqueTex", 2D) = "white" {}
         [PowerSlider(2)] _SpecularPow ("SpecularPow", Range(0, 90)) = 10
+        _SpecInt ("SpecInt", Range(0, 10)) = 1
         [PowerSlider(2)] _FresnelPow ("FresnelPow", Range(0, 10)) = 10
         _CubemapMip ("CubemapMip", Range(0, 7)) = 0
-        _EmitStrength ("EmitStrength", Range(0, 10)) = 1
         _EnvSpec ("EnvSpec", Range(0, 10)) = 1
+        _EmitStrength ("EmitStrength", Range(0, 10)) = 1
 
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags 
+        { 
+            "RenderType"="TransparentCutout" 
+            "ForceNoShadowCasting" = "True" 
+            "IgnoreProjector" = "True"
+        }
         LOD 100
 
         Pass
@@ -61,12 +68,14 @@ Shader "Unlit/OgreArms"
             sampler2D _EmitTex;
             sampler2D _BaseMask;
             sampler2D _MetalTex;
+            sampler2D _OpaqueTex;
 
             float _SpecularPow;
             float _FresnelPow;
             float _CubemapMip;
             float _EmitStrength;
             float _EnvSpec;
+            float _SpecInt;
 
             v2f vert (appdata v)
             {
@@ -83,6 +92,9 @@ Shader "Unlit/OgreArms"
             fixed4 frag (v2f i) : SV_Target
             {
                 float2 rUV = float2(i.uv.x, 1 - i.uv.y);
+                float opaque = tex2D(_OpaqueTex, rUV).r;
+                clip(opaque - 0.1);
+
                 float3 n = UnpackNormal(tex2D(_NormalTex, i.uv)) * float3(1, -1, 1);
                 float3x3 TBN = float3x3(i.tDirWS, i.bDirWS, i.nDirWS);
                 float3 nDirWS = normalize(mul(n, TBN));
@@ -91,7 +103,6 @@ Shader "Unlit/OgreArms"
                 float3 lambert = dot(nDirWS, lDirWS) * 0.5 + 0.5;
                 float3 diffuse = baseCol * lambert * _LightColor0;
 
-                float3 baseMaskCol = tex2D(_BaseMask, rUV);
                 float3 rlDirWS = normalize(reflect(-lDirWS, nDirWS));
                 float3 vDirWS = normalize(UnityWorldSpaceViewDir(i.posWS));
                 float3 phong = dot(rlDirWS, vDirWS) * 0.5 + 0.5;
@@ -99,22 +110,21 @@ Shader "Unlit/OgreArms"
                 float specMask = tex2D(_SpecularMask, rUV).r;
                 float specularPow = lerp(1, _SpecularPow, specMask);
                 float3 spec = pow(phong, specularPow);
-                float baseMask = tex2D(_BaseMask, rUV).a;
-                float3 maskCol = lerp(_LightColor0, baseCol, baseMask);
+                float baseMask = tex2D(_BaseMask, rUV).r;
+                float3 maskCol = lerp(_LightColor0, baseCol, specCol);
                 float metalCol = tex2D(_MetalTex, rUV).r;
-                float3 specular = spec * maskCol * metalCol;
+                float3 specular = spec * maskCol * metalCol * _SpecInt;
 
                 float occulusion = tex2D(_OcculusionMask, rUV).r;
                 float fresnel = pow(1 - (dot(vDirWS, nDirWS) * 0.5 + 0.5), _FresnelPow);
                 float3 rvDirWS = normalize(reflect(-vDirWS, nDirWS));
-                rvDirWS.y *= -1;
                 float mip = lerp(_CubemapMip, 0, specMask);
                 float3 cubemapCol = texCUBElod(_Cubemap, float4(rvDirWS, mip));
                 float3 envSpecular = cubemapCol * fresnel * _EnvSpec * occulusion;
 
                 float3 emit = tex2D(_EmitTex, rUV).r * baseCol * _EmitStrength;
 
-                return float4(diffuse + specular + envSpecular + emit, 1);
+                return float4(diffuse + specular + envSpecular + emit, opaque);
             }
             ENDCG
         }

@@ -1,4 +1,4 @@
-Shader "Unlit/OgreBase"
+Shader "Unlit/OgreMetal"
 {
     Properties
     {
@@ -6,16 +6,17 @@ Shader "Unlit/OgreBase"
         _NormalTex ("NormalTex", 2D) = "bump" {}
         _Cubemap ("Cubemap", cube) = "_Skybox" {}
         _SpecularTex ("SpecularTex", 2D) = "gray" {}
-        _SpecularMask ("SpecularMask", 2D) = "gray" {}
-        _OcculusionMask ("OcculusionMask", 2D) = "gray" {}
+        _SpecExponentMask ("高光次幂mask", 2D) = "gray" {}
+        _RimLightMask ("边缘光mask", 2D) = "gray" {}
+        _TintByBaseMask ("高光染色mask", 2D) = "black" {}
         _EmitTex ("EmitTex", 2D) = "balck" {}
-        _BaseMask ("BaseMask", 2D) = "black" {}
+        _MetalTex ("MetalTex", 2D) = "gray" {}
         [PowerSlider(2)] _SpecularPow ("SpecularPow", Range(0, 90)) = 10
         _SpecInt ("SpecInt", Range(0, 10)) = 1
         [PowerSlider(2)] _FresnelPow ("FresnelPow", Range(0, 10)) = 10
         _CubemapMip ("CubemapMip", Range(0, 7)) = 0
-        _EmitStrength ("EmitStrength", Range(0, 10)) = 1
         _EnvSpec ("EnvSpec", Range(0, 10)) = 1
+        _EmitStrength ("EmitStrength", Range(0, 10)) = 1
 
     }
     SubShader
@@ -56,10 +57,11 @@ Shader "Unlit/OgreBase"
             sampler2D _NormalTex;
             samplerCUBE _Cubemap;
             sampler2D _SpecularTex;
-            sampler2D _SpecularMask;
-            sampler2D _OcculusionMask;
+            sampler2D _SpecExponentMask;
+            sampler2D _RimLightMask;
             sampler2D _EmitTex;
-            sampler2D _BaseMask;
+            sampler2D _TintByBaseMask;
+            sampler2D _MetalTex;
 
             float _SpecularPow;
             float _FresnelPow;
@@ -94,18 +96,19 @@ Shader "Unlit/OgreBase"
                 float3 rlDirWS = normalize(reflect(-lDirWS, nDirWS));
                 float3 vDirWS = normalize(UnityWorldSpaceViewDir(i.posWS));
                 float3 phong = dot(rlDirWS, vDirWS) * 0.5 + 0.5;
-                float3 specCol = tex2D(_SpecularTex, i.uv);
-                float specMask = tex2D(_SpecularMask, rUV).r;
-                float specularPow = lerp(1, _SpecularPow, specMask);
+                float3 specCol = tex2D(_SpecularTex, rUV);
+                float specPowCol = tex2D(_SpecExponentMask, rUV).r;
+                float specularPow = lerp(1, _SpecularPow, specPowCol);
                 float3 spec = pow(phong, specularPow);
-                float baseMask = tex2D(_BaseMask, rUV).r;
-                float3 maskCol = lerp(_LightColor0, baseCol, specCol);
-                float3 specular = spec * maskCol * _SpecInt;
+                float TintByBaseMask = tex2D(_TintByBaseMask, rUV).r;
+                float3 maskCol = lerp(baseCol, _LightColor0, specCol);
+                float metalCol = tex2D(_MetalTex, rUV).r;
+                float3 specular = spec * maskCol * metalCol * _SpecInt;
 
-                float occulusion = tex2D(_OcculusionMask, rUV).r;
+                float occulusion = tex2D(_RimLightMask, rUV).r;
                 float fresnel = pow(1 - (dot(vDirWS, nDirWS) * 0.5 + 0.5), _FresnelPow);
                 float3 rvDirWS = normalize(reflect(-vDirWS, nDirWS));
-                float mip = lerp(_CubemapMip, 0, specMask);
+                float mip = lerp(_CubemapMip, 0, specPowCol);
                 float3 cubemapCol = texCUBElod(_Cubemap, float4(rvDirWS, mip));
                 float3 envSpecular = cubemapCol * fresnel * _EnvSpec * occulusion;
 
