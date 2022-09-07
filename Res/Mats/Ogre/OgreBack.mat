@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: OgreBack
-  m_Shader: {fileID: 4800000, guid: 5ed6401daefd19f4ab37ff227b29aa71, type: 3}
+  m_Shader: {fileID: 4800000, guid: e347975a8710eb641af7c3f3b8cf2ad2, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -32,7 +32,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Cubemap:
-        m_Texture: {fileID: 8900000, guid: 0045774d14886b441aeacb63aa663c40, type: 3}
+        m_Texture: {fileID: 8900000, guid: 844da0b170f31e2419b425b15f1de696, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -47,6 +47,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _DiffuseWarp:
+        m_Texture: {fileID: 2800000, guid: d04a00cd68d24404e922b142c6d9ad6b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -55,12 +59,28 @@ Material:
         m_Texture: {fileID: 2800000, guid: 9638b02f339bf534aa2c4082edf77dea, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _FresnelWarpColor:
+        m_Texture: {fileID: 2800000, guid: 5510b552e967994429a7ade12fb06976, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FresnelWarpDiffuse:
+        m_Texture: {fileID: 2800000, guid: 89d4edb96be1d204fbf2814567a23aaa, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _FresnelWarpSpec:
+        m_Texture: {fileID: 2800000, guid: 30c243a86cc7fdb46bfc32a9765b980a, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 901b8dd1a0d977d4aa6dae25e846feab, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _MaskTex:
+        m_Texture: {fileID: 2800000, guid: 8c4fac1c2546cbc48a6ea47c8303ec04, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetalTex:
-        m_Texture: {fileID: 2800000, guid: fdf27da82abbeb14eab01f4cf44c259e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 12de3d0536f9d5c448664aa94cfb7e65, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -68,7 +88,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalTex:
-        m_Texture: {fileID: 2800000, guid: d1b49b4af53694b45ac47fb9c869e67c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4963cdb36739a6343be45d3b044c9faf, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -87,12 +107,32 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _RimLightMask:
+        m_Texture: {fileID: 2800000, guid: bf908555e09e4084abe470bd6a2efbd7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecExponentMask:
+        m_Texture: {fileID: 2800000, guid: a009646bf571bba45a53aab09ce44a30, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _SpecTintMask:
+        m_Texture: {fileID: 2800000, guid: 37d0ac0dab176d7468f86e762269d041, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecularMask:
         m_Texture: {fileID: 2800000, guid: b4d13b8153fb3484a932632c1ab09683, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecularTex:
         m_Texture: {fileID: 2800000, guid: a009646bf571bba45a53aab09ce44a30, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TintByBaseMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _WarpTex:
+        m_Texture: {fileID: 2800000, guid: 50ac55cd8f096e14bb9257f0bdfae2ff, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
@@ -102,8 +142,9 @@ Material:
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _EmitStrength: 1.97
+    - _EmitStrength: 2.16
     - _EnvSpec: 2.73
+    - _EnvSpecInt: 11.7
     - _FresnelPow: 0.18
     - _GlossMapScale: 1
     - _Glossiness: 0.5
@@ -113,13 +154,15 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
-    - _SpecInt: 1.77
+    - _SpecInt: 2.81
     - _SpecularHighlights: 1
-    - _SpecularPow: 4.8
+    - _SpecularPow: 4.2
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EnvCol: {r: 0.46226418, g: 0.46226418, b: 0.46226418, a: 1}
+    - _RimCol: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
