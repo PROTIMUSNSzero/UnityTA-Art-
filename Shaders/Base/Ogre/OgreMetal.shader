@@ -88,7 +88,7 @@ Shader "Unlit/OgreMetal"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                float3 n = UnpackNormal(tex2D(_NormalTex, i.uv)) * float3(1, -1, 1);
+                float3 n = UnpackNormal(tex2D(_NormalTex, i.uv));
                 float3x3 TBN = float3x3(i.tDirWS, i.bDirWS, i.nDirWS);
                 float3 nDirWS = normalize(mul(n, TBN));
                 float3 lDirWS = normalize(UnityWorldSpaceLightDir(i.posWS));
@@ -118,7 +118,7 @@ Shader "Unlit/OgreMetal"
 
                 clip(opaque - 0.5);
                 
-                // 金属变暗，漫反射效果弱
+                // 金属的漫反射效果弱
                 float3 diff = lerp(baseCol, half3(0, 0, 0), metallic);
                 float3 diffuse = diff * diffWarp * _LightColor0;
 
@@ -127,8 +127,8 @@ Shader "Unlit/OgreMetal"
                 // 结合环境高光的frenelSpecWarp一同计算
                 spec = max(spec, fresnelSpec) * _SpecInt;
                 // 染色值越大，高光越趋向黑灰色（非金属，0.3为经验值，配合specInt使用），否则趋向基础颜色（金属）
-                float3 specTintCol = lerp(baseCol, half3(0.3, 0.3, 0.3), tintCol);
-                float3 specular = spec * specTintCol * specInt * _LightColor0;
+                float3 specTintCol = lerp(baseCol, half3(0.3, 0.3, 0.3), tintCol) * specInt;
+                float3 specular = spec * specTintCol * _LightColor0;
                 
                 float3 envDiffuse = diff * _EnvCol;
 
