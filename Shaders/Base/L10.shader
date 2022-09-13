@@ -46,7 +46,7 @@ Shader "Unlit/L10"
                 float4 vertex : POSITION;
                 float2 uv : TEXCOORD0;
                 float3 normal: NORMAL;
-                float3 tangent: TANGENT; 
+                float4 tangent: TANGENT; 
             };
 
             struct v2f
@@ -88,9 +88,9 @@ Shader "Unlit/L10"
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);
                 o.posWS = mul(unity_ObjectToWorld, v.vertex);
-                o.tangent = normalize(mul(unity_ObjectToWorld, v.tangent));
+                o.tangent = normalize(mul(unity_ObjectToWorld, v.tangent.xyz));
                 o.normal = normalize(UnityObjectToWorldNormal(v.normal));
-                o.bitangent = normalize(cross(o.normal, o.tangent));
+                o.bitangent = normalize(cross(o.normal, o.tangent) * v.tangent.w);
                 // TRANSFER_VERTEX_TO_FRAGMENT(o)
                 return o;
             }
@@ -129,7 +129,7 @@ Shader "Unlit/L10"
                 float3 rvDirWS = normalize(reflect(-vDirWS, nDirWS));
                 // a通道值越大，代表材质越光滑，插值结果越接近0，否则越粗糙，插值越接近指定的mip值
                 float cubemapMip = lerp(_CubemapMip, 0, specCol.a);
-                float3 cubemapCol = texCUBElod(_Cubemap, float4(rvDirWS, cubemapMip)) * _EnvSpec * fresnel;
+                float3 cubemapCol = texCUBElod(_Cubemap, float4(rvDirWS, cubemapMip)) * _EnvSpec * fresnel * specCol.a;
 
                 float3 envLight = (ambient + cubemapCol) * occulusion;
 
