@@ -106,11 +106,11 @@ Shader "Unlit/Clock"
 
             void Rotate(inout float4 vertex, float4 color) 
             {
-                float radians = frac(_Time.y / 3600 / 24) * TWO_PI;
+                float radians = frac(floor(_Time.y / 3600) / 24) * TWO_PI;
                 RotateOffset(vertex, color.r, _OffsetHour.xyz, radians);
-                radians = frac(_Time.y / 3600) * TWO_PI;
+                radians = frac(floor(_Time.y / 60) / 60) * TWO_PI;
                 RotateOffset(vertex, color.g, _OffsetMin.xyz, radians);
-                radians = frac(_Time.y / 60) * TWO_PI;
+                radians = frac(floor(_Time.y) / 60) * TWO_PI;
                 RotateOffset(vertex, color.b, _OffsetSec.xyz, radians);
             }
 
