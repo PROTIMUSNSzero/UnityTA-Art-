@@ -42,8 +42,8 @@ Shader "Unlit/Normal"
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.normal = normalize(UnityObjectToWorldNormal(v.normal));
-                o.tangent = normalize(mul(unity_ObjectToWorld, v.tangent));
+                o.normal = normalize(UnityObjectToWorldNormal(v.normal)); 
+                o.tangent = normalize(mul((float3x3)unity_ObjectToWorld, v.tangent)); //变换矩阵最后1列为平移变换，方向向量变换不需要该列参与计算，等同于 mul(unity_ObjectToWorld, float4(v.tangent, 0)) 或 mul(unity_ObjectToWorld, v.tangent)；顶点变换w分量须为1
                 o.bitangent = normalize(cross(o.normal, o.tangent));
                 o.uv = v.uv;
                 return o;
