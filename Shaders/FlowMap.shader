@@ -3,9 +3,10 @@ Shader "Unlit/FlowMap"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _FlowTex ("FlowTex", 2D) = "red" {}
-        _FlowScale ("FlowScale", Range(0, 10)) = 1
+        _FlowTex ("FlowTex", 2D) = "gray" {}
         _FlowSpeed ("FlowSpeed", Range(0, 10)) = 1
+        _TimeSpeed ("TimeSpeed", Range(0, 10)) = 1
+        [Toggle] _FlipY ("Flip Y", int) = 0
     }
     SubShader
     {
@@ -39,6 +40,8 @@ Shader "Unlit/FlowMap"
             float4 _FlowTex_ST;
             float _FlowScale;
             float _FlowSpeed;
+            float _TimeSpeed;
+            int _FlipY;
 
             v2f vert (appdata v)
             {
@@ -51,9 +54,14 @@ Shader "Unlit/FlowMap"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                float2 flowDir = (tex2D(_FlowTex, i.flowUV).rg * 2 - 1) * _FlowScale;
-                float2 phase0 = frac(_Time.x * _FlowSpeed);
-                float2 phase1 = frac(_Time.x * _FlowSpeed + 0.5);
+                float2 flowUV = i.flowUV;
+                if (_FlipY)
+                {
+                    flowUV.y = 1 - flowUV.y;
+                }
+                float2 flowDir = (tex2D(_FlowTex, flowUV).rg * 2 - 1) * _FlowSpeed;
+                float2 phase0 = frac(_Time.x * _TimeSpeed);
+                float2 phase1 = frac(_Time.x * _TimeSpeed + 0.5);
                 float lerpVal = abs(0.5 - phase0) / 0.5;
                 float4 tex0 = tex2D(_MainTex, i.uv + flowDir * phase0);
                 float4 tex1 = tex2D(_MainTex, i.uv + flowDir * phase1);
