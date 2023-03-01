@@ -24,8 +24,16 @@ Shader "Unlit/DOF"
     sampler2D _MainTex;
     sampler2D _CameraDepthTexture;
     float4 _MainTex_TexelSize; // (1.0 / scrW, 1.0 / scrH, scrW, scrH)
-    float _dofNear;
-    float _dofFar;
+    float _DofNear;
+    float _DofFar;
+    float _BlurSize;
+    float _SmoothRange;
+
+    float getDepth(float2 uv)
+    {
+        float depth = tex2D(_CameraDepthTexture, uv).r;
+        return Linear01Depth(depth);
+    }
 
     v2f vert (appdata v)
     {
@@ -43,10 +51,9 @@ Shader "Unlit/DOF"
 
     fixed4 frag (v2f i) : SV_Target
     {
-        float depth = tex2D(_CameraDepthTexture, i.uv).r;
-        depth = Linear01Depth(depth);
+        float depth = getDepth(i.uv);
         float focus = 1;
-        if (depth > _dofFar || depth < _dofNear)
+        if (depth > _DofFar || depth < _DofNear)
         {
             focus = 0;
         }
@@ -58,13 +65,13 @@ Shader "Unlit/DOF"
         v2f o;
         o.vertex = UnityObjectToClipPos(v.vertex);
         o.uv = v.uv;
-        float texDeltaV = _MainTex_TexelSize.x;
+        float2 texDeltaV = _MainTex_TexelSize.xy;
         fixed2 v1 = (1, 0);
         fixed2 v2 = (2, 0);
-        o.uv1.xy = o.uv + _MainTex_TexelSize.x * v1;
-        o.uv2.xy = o.uv + _MainTex_TexelSize.x * v2;
-        o.uv1.zw = o.uv - _MainTex_TexelSize.x * v1;
-        o.uv2.zw = o.uv - _MainTex_TexelSize.x * v2;
+        o.uv1.xy = o.uv + texDeltaV * v1 * _BlurSize;
+        o.uv2.xy = o.uv + texDeltaV * v2 * _BlurSize;
+        o.uv1.zw = o.uv - texDeltaV * v1 * _BlurSize;
+        o.uv2.zw = o.uv - texDeltaV * v2 * _BlurSize;
         return o;
     }
 
@@ -73,30 +80,43 @@ Shader "Unlit/DOF"
         v2f o;
         o.vertex = UnityObjectToClipPos(v.vertex);
         o.uv = v.uv;
-        float texDeltaH = _MainTex_TexelSize.y;
+        float2 texDeltaH = _MainTex_TexelSize.xy;
         fixed2 v1 = (0, 1);
         fixed2 v2 = (0, 2);
-        o.uv1.xy = o.uv + texDeltaH * v1;
-        o.uv2.xy = o.uv + texDeltaH * v2;
-        o.uv1.zw = o.uv - texDeltaH * v1;
-        o.uv2.zw = o.uv - texDeltaH * v2;
+        o.uv1.xy = o.uv + texDeltaH * v1 * _BlurSize;
+        o.uv2.xy = o.uv + texDeltaH * v2 * _BlurSize;
+        o.uv1.zw = o.uv - texDeltaH * v1 * _BlurSize;
+        o.uv2.zw = o.uv - texDeltaH * v2 * _BlurSize;
         return o;
     }
 
     fixed4 fragBlur (v2f i) : SV_Target
     {
-        float depth = tex2D(_CameraDepthTexture, i.uv).r;
-        depth = Linear01Depth(depth);
+        float depth = getDepth(i.uv);
         float4 col = tex2D(_MainTex, i.uv);
-        if (depth > _dofFar || depth < _dofNear)
+        if (depth <= _DofFar && depth >= _DofNear)
         {
-            float4 col = col * 0.4026 
-                + tex2D(_MainTex, i.uv1.xy) * 0.2442
-                + tex2D(_MainTex, i.uv1.zw) * 0.2442
-                + tex2D(_MainTex, i.uv2.xy) * 0.0545
-                + tex2D(_MainTex, i.uv2.zw) * 0.0545;
+            return col;
         }
-        return col;
+        float4 blurCol = col * 0.4026 
+            + tex2D(_MainTex, i.uv1.xy) * 0.2442
+            + tex2D(_MainTex, i.uv1.zw) * 0.2442
+            + tex2D(_MainTex, i.uv2.xy) * 0.0545
+            + tex2D(_MainTex, i.uv2.zw) * 0.0545;
+        float blurScale = 1;
+        if (_SmoothRange != 0)
+        {
+            // 在模糊的边界区域平滑过渡
+            if (depth > _DofFar)
+            {
+                blurScale = saturate((depth - _DofFar) * _SmoothRange);
+            }
+            else if (depth < _DofNear)
+            {
+                blurScale = saturate((_DofNear - depth) * _SmoothRange);
+            }
+        }
+        return col * (1.0 - blurScale) + blurCol * blurScale;
     }
     ENDCG 
     
@@ -116,6 +136,13 @@ Shader "Unlit/DOF"
             CGPROGRAM
             #pragma vertex vertV
             #pragma fragment fragBlur
+            ENDCG
+        }
+        Pass
+        {
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
             ENDCG
         }
     }

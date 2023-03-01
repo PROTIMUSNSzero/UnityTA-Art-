@@ -13,15 +13,18 @@ public class DOF : MonoBehaviour
     public float depthOfField = 10;
     [Range(0.1f, 50f)] 
     public float focusSphereSize;
-    [Range(1, 10)] 
-    public int downSample = 1;
-    [Range(1, 4)]
+    [Range(1, 20)]
     public int blurIteration = 2;
+    [Range(0.2f, 3)]
+    public float blurSpread = 1;
+    [Range(0, 10)]
+    public float blurSmoothRange;
+    public bool showDepth = false;
 
     public Material mat;
     
     private Camera _camera;
-    private int[] _shaderProps = new int[2];
+    private int[] _shaderProps = new int[4];
 
 
     private void Start()
@@ -33,8 +36,10 @@ public class DOF : MonoBehaviour
         _camera.depthTextureMode |= DepthTextureMode.Depth;
         if (mat)
         {
-            _shaderProps[0] = Shader.PropertyToID("_dofNear");
-            _shaderProps[1] = Shader.PropertyToID("_dofFar");
+            _shaderProps[0] = Shader.PropertyToID("_DofNear");
+            _shaderProps[1] = Shader.PropertyToID("_DofFar");
+            _shaderProps[2] = Shader.PropertyToID("_BlurSize");
+            _shaderProps[3] = Shader.PropertyToID("_SmoothRange");
         }
     }
 
@@ -45,31 +50,37 @@ public class DOF : MonoBehaviour
             Graphics.Blit(src, dest);
             return;
         }
-        
+        mat = new Material(mat.shader);
         var nearDist = _camera.nearClipPlane;
         var clipDist = _camera.farClipPlane - nearDist;
         mat.SetFloat(_shaderProps[0], (focusDistance - depthOfField - nearDist) / clipDist);
         mat.SetFloat(_shaderProps[1], (focusDistance + depthOfField - nearDist) / clipDist);
-
+        
+        if (showDepth)
+        {
+            Graphics.Blit(src, dest, mat, 2);
+            return;
+        }
+        
+        //blur
         var scrW = Screen.width;
         var scrH = Screen.height;
-        var rt0 = RenderTexture.GetTemporary(scrW / downSample, scrH / downSample);
+        mat.SetFloat(_shaderProps[3], blurSmoothRange);
+        var rt0 = RenderTexture.GetTemporary(scrW, scrH);
         Graphics.Blit(src, rt0);
         for (int i = 0; i < blurIteration; i++)
         {
-            var rt1 = RenderTexture.GetTemporary(scrW / downSample, scrH / downSample);
+            mat.SetFloat(_shaderProps[2], 1 + i * blurSpread);
+            var rt1 = RenderTexture.GetTemporary(scrW, scrH);
             Graphics.Blit(rt0, rt1, mat, 0);
             RenderTexture.ReleaseTemporary(rt0);
-            rt0 = RenderTexture.GetTemporary(scrW / downSample, scrH / downSample);
+            rt0 = RenderTexture.GetTemporary(scrW, scrH);
             Graphics.Blit(rt1, rt0, mat, 1);
             RenderTexture.ReleaseTemporary(rt1);
         }
         Graphics.Blit(rt0, dest);
         RenderTexture.ReleaseTemporary(rt0);
-        
-//        Graphics.Blit(src, dest, mat);
     }
-
 
     private void OnDrawGizmos()
     {
