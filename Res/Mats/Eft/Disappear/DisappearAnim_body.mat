@@ -106,7 +106,7 @@ Material:
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EftCol: {r: 4.9011126, g: 38.6323, b: 55.06544, a: 1}
-    - _EftPars: {r: 0.05, g: 5, b: 0.73, a: 0.9}
+    - _EftPars: {r: 0.05, g: 5, b: 0.64, a: 2}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _EnvDownCol: {r: 1, g: 1, b: 1, a: 1}
     - _EnvSideCol: {r: 1, g: 1, b: 1, a: 1}

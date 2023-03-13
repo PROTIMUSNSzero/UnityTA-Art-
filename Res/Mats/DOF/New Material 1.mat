@@ -7,10 +7,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DisappearAnim_head
-  m_Shader: {fileID: 4800000, guid: e0b5111bb34232545bb7d40f35754a94, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
+  m_Name: New Material 1
+  m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: _EMISSION _NORMALMAP
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -20,11 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _Cubemap:
-        m_Texture: {fileID: 8900000, guid: d6d1a92bf4dc5304eb7016ac6aec928f, type: 3}
+        m_Texture: {fileID: 2800000, guid: a9c83bb41b61d440a869622e21c36294, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -39,32 +35,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _EftMap0:
-        m_Texture: {fileID: 2800000, guid: 419b5431944ceed49a387ea13fd9a9a1, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _EftMap1:
-        m_Texture: {fileID: 2800000, guid: 260baa752fe588d44a39080221a06f80, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _EmissionMap:
-        m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _EmitTex:
-        m_Texture: {fileID: 2800000, guid: a8471418062d9534abecde48ee3c88a9, type: 3}
+        m_Texture: {fileID: 2800000, guid: b1ff59f8987804812bba5f072b0f4ba3, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 09773eef420dd66469572be3256b9444, type: 3}
+        m_Texture: {fileID: 2800000, guid: 4686dda0bed414a2d845f4f6213fa208, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _NormalTex:
-        m_Texture: {fileID: 2800000, guid: 27c2a1dc0f065744195859850784b0b4, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -75,21 +55,12 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _SpecTex:
-        m_Texture: {fileID: 2800000, guid: fe71a8fe37091a04b8405cf8e1d67c5d, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
     - _BumpScale: 1
-    - _CubemapMip: 0
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _Emit: 4.49
-    - _EnvDiffuse: 0.2
-    - _EnvSpec: 1
-    - _FresnelPow: 1
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
@@ -98,18 +69,11 @@ Material:
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
-    - _SpecPow: 1
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EftCol: {r: 2.162952, g: 35.843204, b: 59.017693, a: 1}
-    - _EftPars: {r: 0.05, g: 5, b: 0.64, a: 2}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _EnvDownCol: {r: 1, g: 1, b: 1, a: 1}
-    - _EnvSideCol: {r: 1, g: 1, b: 1, a: 1}
-    - _EnvUpCol: {r: 1, g: 1, b: 1, a: 1}
-    - _MainColor: {r: 1, g: 1, b: 1, a: 1}
+    - _EmissionColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
