@@ -6,7 +6,7 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class ComputeGraph : MonoBehaviour
 {
-    public const int maxResolution = 100;
+    public const int maxResolution = 1000;
     [Range(10, maxResolution)]
     public int resolution = 100;
     [Range(0.1f, 5f)] 
@@ -65,7 +65,7 @@ public class ComputeGraph : MonoBehaviour
         mat.SetFloat(stepId, step);
         mat.SetVector(scaleId, new Vector4(step, 1.0f / step));
         var bounds = new Bounds(Vector3.zero, Vector3.one * (2 + step));
-        Graphics.DrawMeshInstancedProcedural(mesh, 0, mat, bounds, _positionBuffer.count);
+        Graphics.DrawMeshInstancedProcedural(mesh, 0, mat, bounds, resolution * resolution);
     }
     
 }

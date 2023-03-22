@@ -13,6 +13,8 @@ Shader "Custom/Cube"
         // Physically based Standard lighting model, and enable shadows on all light types
         #pragma surface surf Standard fullforwardshadows
         #pragma instancing_options assumeuniformscaling procedural:ConfigureProcedural
+        // dont use asyncronous compilation and force unity to compile before it is used. asyncronous compilation (editor feature, not build, only compile when needed rather than aot to save time, but it doesnt work with procedural drawing)
+        #pragma editor_sync_compilation
         // Use shader model 3.0 target, to get nicer looking lighting
         // 4.5 to indicate the support for compute shader
         #pragma target 4.5
