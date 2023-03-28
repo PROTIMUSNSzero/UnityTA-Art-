@@ -118,10 +118,4 @@ Shader "Unlit/Bloom" {
 			ENDCG
 		}
 	}
-}         CGPROGRAM
-            #pragma vertex vert
-            #pragma fragment fragBlend
-            ENDCG
-        }
-    }
-}
+}       

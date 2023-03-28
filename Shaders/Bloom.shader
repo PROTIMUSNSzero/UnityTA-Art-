@@ -98,9 +98,9 @@
             #pragma fragment fragFilter
 
             // 灰度
-            float Luminance(float4 color)
+            float Luminance(float3 color)
             {
-                return  0.2125 * color.r + 0.7154 * color.g + 0.0721 * color.b;
+                return dot(float3(0.2125, 0.7154, 0.0721), color);
             }
 
             fixed4 fragFilter (v2f i) : SV_Target
