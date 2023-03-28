@@ -31,15 +31,18 @@ Shader "Unlit/Bloom2"
     sampler2D _MainTex;
     float4 _MainTex_ST;
     float4 _MainTex_TexelSize;
-    float _LuminanceThreshold;
     sampler2D _BlurTex;
     float4 _Filter;
 
-    // contrib = (bright - threshold) / bright, contrib > 0 when bright > threshold
+    // contrib1 = (bright - threshold) / bright, contrib > 0 when bright > threshold
     fixed3 preFilter (fixed3 c)
     {
         fixed brightness = max(c.r, max(c.g, c.b));
-        fixed contrib = max(0, brightness - _LuminanceThreshold);
+        fixed contrib1 = max(0, brightness - _Filter.x);
+        half soft = brightness - _Filter.y;
+        soft = clamp(soft, 0, _Filter.z);
+        soft = soft * soft * _Filter.w;
+        half contrib = max(soft, contrib1);
         contrib /= max(brightness, 0.00001);
         return c * contrib;
     }
