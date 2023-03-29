@@ -13,10 +13,12 @@ public class Bloom2 : MonoBehaviour
     public float softThreshold;
     [Range(1, 10)] 
     public int downSampleIterations;
+    [Range(0f, 1f)] 
+    public float intensity;
     public Shader shader;
 
     private Material _mat;
-    private int[] _shaderProps = new int[4];
+    private int[] _shaderProps = new int[3];
     private RenderTexture[] _texs = new RenderTexture[16];
     
     void OnEnable()
@@ -24,6 +26,7 @@ public class Bloom2 : MonoBehaviour
         _mat = new Material(shader);
         _shaderProps[0] = Shader.PropertyToID("_Filter");
         _shaderProps[1] = Shader.PropertyToID("_BlurTex");
+        _shaderProps[2] = Shader.PropertyToID("_Intensity");
     }    
 
     private void OnRenderImage(RenderTexture src, RenderTexture dest)
@@ -39,6 +42,7 @@ public class Bloom2 : MonoBehaviour
         filter.z = 2 * knee;
         filter.w = 0.25f / (knee + 0.00001f);
         _mat.SetVector(_shaderProps[0], filter);
+        _mat.SetFloat(_shaderProps[2], intensity);
         RenderTexture destRT = _texs[0] = RenderTexture.GetTemporary(scrW, scrH, 0, format);
         RenderTexture curRT = src;
         Graphics.Blit(curRT, destRT, _mat, 0);

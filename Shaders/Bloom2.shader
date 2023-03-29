@@ -33,8 +33,11 @@ Shader "Unlit/Bloom2"
     float4 _MainTex_TexelSize;
     sampler2D _BlurTex;
     float4 _Filter;
+    float _Intensity;
 
     // contrib1 = (bright - threshold) / bright, contrib > 0 when bright > threshold
+    // soft = (min(max(bright - threshold + threshold * softThreshold, 0), 2 * threshold * softThreshold))^2 / (4 * threshold * softThreshold)
+    // contrib = max(soft, contrib1) / bright
     fixed3 preFilter (fixed3 c)
     {
         fixed brightness = max(c.r, max(c.g, c.b));
@@ -124,7 +127,7 @@ Shader "Unlit/Bloom2"
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed4 col = tex2D(_BlurTex, i.uv);
-                col.rgb += SampleBox(i.uv, 0.5).rgb;
+                col.rgb += _Intensity * SampleBox(i.uv, 0.5).rgb;
                 return col;
             }
             ENDCG

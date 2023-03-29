@@ -704,9 +704,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6ca05b5147d725459ba16e113d41af8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  luminanceThreshold: 9.1
-  softThreshold: 0.222
+  luminanceThreshold: 6.73
+  softThreshold: 0.141
   downSampleIterations: 5
+  intensity: 0.176
   shader: {fileID: 4800000, guid: 8233ff8da3d307d44abc3cd87fa29a86, type: 3}
 --- !u!1 &1516634411
 GameObject:
