@@ -59,6 +59,7 @@ public class ComputeGraph : MonoBehaviour
         computeShader.SetBuffer(0, positionsId, _positionBuffer);
 
         int groupNum = Mathf.CeilToInt(resolution / 8f);
+        // 调用compute shader中的计算函数并分配线程组（三维，共groupNum * groupNum * 1个线程组）
         computeShader.Dispatch(0, groupNum, groupNum, 1);
         
         mat.SetBuffer(positionsId, _positionBuffer);

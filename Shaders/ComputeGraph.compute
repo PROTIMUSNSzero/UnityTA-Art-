@@ -29,7 +29,10 @@ float3 Wave(float u, float v, float t)
     return p;
 }
 
+// numthreads定义线程组内的线程分布（三维，8列8行）
 [numthreads(8,8,1)]
+// 当前线程在所有分发线程组中的id：SV_DispatchThreadID；当前所在线程组的id：SV_GroupID；当前线程在组内的id：SV_GroupThreadID
+// SV_DispatchThreadID = SV_GroupID * numthreads + SV_GroupThreadID
 void WaveKernel (uint3 id : SV_DispatchThreadID)
 {
     // TODO: insert actual code here!
